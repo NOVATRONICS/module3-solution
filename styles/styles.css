@@ -10,7 +10,7 @@ input[type="text"] {
   margin-left: 10px;
 }
 .loader {
-  display: none;
+  display: block;
   margin-left: 5px;
   font-size: 10px;
   float: left;
@@ -49,4 +49,8 @@ input[type="text"] {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+
+.error {
+  color: red;
 }
