@@ -13,7 +13,7 @@
     <b>Action</b>
   </th>
 </tr>
-<tr ng-repeat="item in list.items">
+<tr ng-repeat="item in foundItems">
   <td>
     {{ item.short_name }}
   </td>
@@ -24,7 +24,7 @@
     {{ item.description }}
   </td>
   <td>
-    <button class="btn btn-warning" ng-click="list.onRemove({index: $index});">Don't want this one!</button>
+    <button class="btn btn-warning" ng-click="onRemove({index: $index});">Don't want this one!</button>
   </td>
 </tr>
 </table>

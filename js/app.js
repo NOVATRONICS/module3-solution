@@ -21,7 +21,9 @@ function MenuSearchService($http, ApiBasePath) {
       var foundItems = [];
       var menuItems = result.data.menu_items;
       var search = searchTerm.toLowerCase();
+
       console.log('menuItems length is', menuItems.length);
+
       for (var i = 0; i < menuItems.length; i++) {
         var name = menuItems[i].name;
         var description = menuItems[i].description;
@@ -30,7 +32,9 @@ function MenuSearchService($http, ApiBasePath) {
           foundItems.push({short_name: short_name, name: name, description: description});
         }
       }
-      console.log('getMatchedMenuItems length is ', foundItems.length);
+
+      console.log('foundItems length is ', foundItems.length);
+
       return foundItems;
     });
   };
@@ -39,61 +43,43 @@ function MenuSearchService($http, ApiBasePath) {
 NarrowItDownController.$inject = ['MenuSearchService','$rootScope'];
 function NarrowItDownController(MenuSearchService, $rootScope) {
   var ctrl = this;
-
   ctrl.found = [];
-  ctrl.search_term = "";
-  ctrl.show_message = false;
+  ctrl.searchTerm = "";
 
-  ctrl.removeItem = function (itemIndex) {
-    console.log('removeItem', itemIndex);
-    ctrl.found.splice(itemIndex, 1);
-  }
-
-  ctrl.narrowItems = function () {
-    var searchTerm = ctrl.search_term;
-    if(searchTerm !== "") {
-        $rootScope.$broadcast('searchitems:processing', {on: true});
-        MenuSearchService.getMatchedMenuItems(searchTerm).then(function (result) {
-          ctrl.found = result;
-          if(ctrl.found.length) {
-              ctrl.show_message = false;
-          } else {
-            ctrl.show_message = true;
-          }
-          $rootScope.$broadcast('searchitems:processing', {on: false});
-        });
-    }
-    else {
+  ctrl.search = function() {
+		ctrl.found = []
+		ctrl.error = false;
+		if (ctrl.searchTerm === "") {
+			ctrl.error = true;
+      $rootScope.$broadcast('searchitems:processing', {on: false});
+		} else {
+      $rootScope.$broadcast('searchitems:processing', {on: true});
+			MenuSearchService.getMatchedMenuItems(ctrl.searchTerm).then(function(result) {
+				ctrl.found = result;
         $rootScope.$broadcast('searchitems:processing', {on: false});
-        ctrl.found = [];
-        ctrl.show_message = true;
-    }
-  }
+				if (ctrl.found.length === 0) {
+					ctrl.error = true;
+				};
+			});
+		}
+	};
 
+	ctrl.removeItem = function(itemIndex) {
+		ctrl.found.splice(itemIndex, 1);
+	};
 }
 
-function FoundItemsDirective() {
-  var ddo = {
-    templateUrl: 'founditems.template.html',
-    scope: {
-      items: '<',
-      myTitle: '@title',
-      badRemove: '=',
-      onRemove: '&'
-    },
-    controller: FoundItemsDirectiveController,
-    controllerAs: 'list',
-    bindToController: true
-  };
-
-  return ddo;
-}
-
-
-function FoundItemsDirectiveController() {
-  var list = this;
-
-}
+function FoundItemsDirective(){
+	var ddo = {
+		templateUrl: 'founditems.template.html',
+		restrict: 'E',
+		scope: {
+			foundItems: '<',
+			onRemove: '&'
+		}
+	};
+	return ddo;
+};
 
 
 

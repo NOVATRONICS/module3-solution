@@ -17,19 +17,20 @@
 
     <form class="form-inline">
       <div class="form-group">
-        <input type="text" placeholder="search term" class="form-control" ng-model="ctrl.search_term">
+        <input type="text" placeholder="search term" class="form-control" ng-model="ctrl.searchTerm">
       </div>
-      <button class="btn btn-primary" ng-click="ctrl.narrowItems()">Narrow It Down For Me!</button>
+      <button class="btn btn-primary" ng-click="ctrl.search();">Narrow It Down For Me!</button>
     </form>
 
     <br>
-    <!-- found-items should be implemented as a component -->
-    <p ng-if="ctrl.show_message">Nothing found</p>
-    <found-items
-      items="ctrl.found"
-      on-remove="ctrl.removeItem(index)" ng-if="ctrl.found.length"></found-items>
+
     <!-- Bonus loader (see Bonus section of the assignment) -->
     <items-loader-indicator></items-loader-indicator>
+
+    <!-- found-items should be implemented as a component -->
+    <found-items found-items="ctrl.found" on-remove="ctrl.removeItem(index);" ng-if="ctrl.found.length"></found-items>
+    <div class="error" ng-if="ctrl.error">Nothing found</div>
+
   </div>
   <script src="js/angular.min.js"></script>
   <script src="js/app.js"></script>

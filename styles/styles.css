@@ -30,6 +30,10 @@ input[type="text"] {
   width: 3em;
   height: 3em;
 }
+
+.result{
+  clear: left;
+}
 @-webkit-keyframes load8 {
   0% {
     -webkit-transform: rotate(0deg);
@@ -49,8 +53,4 @@ input[type="text"] {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
-}
-
-.error {
-  color: red;
 }
